@@ -45,8 +45,13 @@ export class LoginComponent implements OnInit {
 
     try {
       // TODO vérifier le résultat de l'authentification. Rediriger sur "/" en cas de succès ou afficher une erreur en cas d'échec
-      await this.authService.authenticate(this.model.username, this.model.password);
-      this.router.navigate(["/"]);
+      const check = await this.authService.authenticate(this.model.username, this.model.password);
+      if(check.success){
+        this.router.navigate(["/"])
+        this.nzMessageService.success("Bienvenue " + this.model.username)
+      }else{
+        this.nzMessageService.error("Identifiant ou mot de passe incorrecte")
+      }
     } catch (e) {
       this.nzMessageService.error("Une erreur est survenue. Veuillez réessayer plus tard");
     }

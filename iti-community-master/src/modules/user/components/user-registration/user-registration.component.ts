@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NzMessageService } from "ng-zorro-antd/message";
 import { UserQueries } from '../../services/user.queries';
 import { UserService } from '../../services/user.service';
 
@@ -24,7 +25,8 @@ export class UserRegistrationComponent implements OnInit {
   constructor(
     private router: Router,
     private userService: UserService,
-    private userQueries: UserQueries
+    private userQueries: UserQueries,
+    private nzMessageService: NzMessageService
   ) { }
 
   ngOnInit(): void {
@@ -36,18 +38,21 @@ export class UserRegistrationComponent implements OnInit {
     if (this.form.form.invalid || this.model.password !== this.model.confirmPassword) {
       return;
     }
-
-     
-    // TODO Enregistrer l'utilisateur via le UserService
-    const promise = Promise.resolve(this.userQueries.exists(this.model.username))
-    promise.then((value) =>{
-        alert(value)
+    
+    this.userQueries.exists(this.model.username).then((value) =>{
         if(value){
-          this.userService.register(this.model.username,this.model.password)
-          this.goToLogin();
+          
+          alert(this.model.username+" existe déja")
+          return;
         }
-        return ;   
+        // TODO Enregistrer l'utilisateur via le UserService
+        this.userService.register(this.model.username,this.model.password)
+        this.goToLogin();
+        
       });
+      
+      
+         
   }
 
   goToLogin() {

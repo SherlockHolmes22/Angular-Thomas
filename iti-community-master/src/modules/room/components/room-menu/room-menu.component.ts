@@ -16,10 +16,12 @@ export class RoomMenuComponent implements OnInit {
   roomId$: Observable<string | undefined>;
 
   rooms: Room[];
+  router: Router;
 
-  constructor(private feedStore: FeedStore, private queries: RoomQueries, private roomSocketService: RoomSocketService) {
+  constructor(private feedStore: FeedStore, private queries: RoomQueries, private roomSocketService: RoomSocketService, private routerCo: Router) {
     this.roomId$ = feedStore.roomId$;
     this.rooms = [];
+    this.router = routerCo;
   }
 
   async ngOnInit() {
@@ -28,5 +30,6 @@ export class RoomMenuComponent implements OnInit {
 
   goToRoom(room: Room) {
     // TODO naviguer vers app/[id de la room]
+    this.router.navigate(["app/"+room.id]);
   }
 }

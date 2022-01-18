@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserQueries } from '../../services/user.queries';
 import { UserService } from '../../services/user.service';
 
 class UserRegistrationFormModel {
@@ -22,7 +23,8 @@ export class UserRegistrationComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private userQueries: UserQueries
   ) { }
 
   ngOnInit(): void {
@@ -35,8 +37,17 @@ export class UserRegistrationComponent implements OnInit {
       return;
     }
 
+     
     // TODO Enregistrer l'utilisateur via le UserService
-    this.goToLogin();
+    const promise = Promise.resolve(this.userQueries.exists(this.model.username))
+    promise.then((value) =>{
+        alert(value)
+        if(value){
+          this.userService.register(this.model.username,this.model.password)
+          this.goToLogin();
+        }
+        return ;   
+      });
   }
 
   goToLogin() {

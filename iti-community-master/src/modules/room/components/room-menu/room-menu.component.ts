@@ -14,22 +14,27 @@ import { RoomSocketService } from '../../services/room.socket.service';
 })
 export class RoomMenuComponent implements OnInit {
   roomId$: Observable<string | undefined>;
-
   rooms: Room[];
-  router: Router;
 
-  constructor(private feedStore: FeedStore, private queries: RoomQueries, private roomSocketService: RoomSocketService, private routerCo: Router) {
+  constructor(
+    private feedStore: FeedStore, 
+    private queries: RoomQueries, 
+    private roomSocketService: RoomSocketService,
+    private router: Router) {
     this.roomId$ = feedStore.roomId$;
     this.rooms = [];
-    this.router = routerCo;
   }
 
   async ngOnInit() {
     this.rooms = await this.queries.getAll();
+    if (this.feedStore.value.roomId === undefined) this.router.navigate(["app/"+this.rooms[0].id]);
+    
+    this.roomSocketService.onNewRoom(room => {
+      this.rooms.push(room);
+    })
   }
 
   goToRoom(room: Room) {
-    // TODO naviguer vers app/[id de la room]
     this.router.navigate(["app/"+room.id]);
   }
 }

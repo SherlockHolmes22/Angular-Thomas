@@ -57,6 +57,11 @@ export class UserService {
 
     async update(id: string, user: { username?: string, photo?: UploadedFile }) {
         let photoLocation: string | undefined;
+        
+        if (user.username) {
+            user.username = this.normalizeUsername(user.username);
+        }
+
         if (user.photo) {
             if (this.pictureService.isFileSupported(user.photo.type)) {
                 const [picStream] = this.pictureService.resize(fs.createReadStream(user.photo.path), { width: 512, height: 512 });

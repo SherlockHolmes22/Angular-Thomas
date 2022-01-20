@@ -3,6 +3,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { User } from '../../user.model';
+import { values } from 'lodash-es';
 
 export class UserProfileForm {
   id: string;
@@ -74,9 +75,10 @@ export class UserProfileModalComponent implements OnInit {
 
   async onOk() {
     // TODO vérifier si le formulaire est valide
-
+    if (this.model.username === "") return;
     if (this.model.hasChanged()) {
-      // TODO mettre à jour l'utilisateur via le service
+      console.log("change")
+      this.userService.update({id: this.user.id, username: this.model.username, photo: this.model.file}).then((values) => {});
     }
 
     this.close();

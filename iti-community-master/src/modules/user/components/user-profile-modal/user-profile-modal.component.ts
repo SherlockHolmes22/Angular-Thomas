@@ -75,13 +75,13 @@ export class UserProfileModalComponent implements OnInit {
 
   async onOk() {
     // TODO vérifier si le formulaire est valide
-    if (this.model.username === "") return;
-    if (this.model.hasChanged()) {
-      console.log("change")
-      this.userService.update({id: this.user.id, username: this.model.username, photo: this.model.file}).then((values) => {});
+    if (this.form.form.valid) {
+      if (this.model.hasChanged()) {
+        this.userService.update({id: this.user.id, username: this.model.username, photo: this.model.file}).then((values) => {values});
+      }
+  
+      this.close();
     }
-
-    this.close();
   }
 
   onFileUpload = (file: File) => {

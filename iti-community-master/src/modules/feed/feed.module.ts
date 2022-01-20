@@ -19,9 +19,10 @@ import { UserModule } from '../user/user.module';
 import { HttpPostCommands } from './services/plateform/http/post.commands.http';
 import { HttpPostQueries } from './services/plateform/http/post.queries.http';
 import { FeedSocketService } from './services/feed.socket.service';
+import { DateFormatPipe } from './date-format.pipe';
 
 @NgModule({
-  declarations: [FeedComponent, PostComponent, PostAttachementImageComponent, PostAttachementVideoComponent, PostAttachementAudioComponent, PostAttachementYoutubeComponent],
+  declarations: [FeedComponent, PostComponent, PostAttachementImageComponent, PostAttachementVideoComponent, PostAttachementAudioComponent, PostAttachementYoutubeComponent,DateFormatPipe],
   exports: [FeedComponent, PostComponent],
   providers: [PostMapper, PostService, FeedStore, FeedSocketService, {
     provide: PostCommands,
@@ -33,7 +34,8 @@ import { FeedSocketService } from './services/feed.socket.service';
   imports: [
     CommonModule,
     UserModule,
-    NzIconModule
+    NzIconModule,
+    
   ]
 })
 export class FeedModule { }

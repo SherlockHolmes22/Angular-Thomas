@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { MessageImageElement } from '../../../post.model';
 
 @Component({
@@ -10,8 +11,13 @@ export class PostAttachementImageComponent implements OnInit {
   @Input()
   element: MessageImageElement;
 
-  constructor() { }
+  constructor(
+    private sanitizer : DomSanitizer
+  ) { }
 
+  get url() : SafeResourceUrl{
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.element.url)
+  }
   ngOnInit(): void {
   }
 
